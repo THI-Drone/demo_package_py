@@ -25,6 +25,9 @@ jobs:
       with:
         required-ros-distributions: foxy
 
+    - name: Install dependencies
+      run: sudo apt update && sudo apt install -y python3-colcon-common-extensions     
+
     - name: ros2 build
       uses: ros-tooling/action-ros-ci@v0.3
       with:
