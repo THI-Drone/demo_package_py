@@ -35,8 +35,46 @@ jobs:
 
     - name: Build and Test
       run: |
-        colcon build && colcon test
+        colcon build
 
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: ./install
+
+
+
+  test:
+    needs: build
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
+        path: ./install
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt-get install -y python3-pip
+        pip install setuptools==58.2.0
+        pip install colcon-common-extensions
+
+
+    - name: Build and Test
+      run: |
+        colcon test
     #- name: Generate Coverage Report
     #  run: |
     #    colcon test \
