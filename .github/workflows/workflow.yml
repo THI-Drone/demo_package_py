@@ -76,6 +76,7 @@ jobs:
       run: |
         ls -la
         ls -la ./install
+        ls -la ./install/*
         colcon test
     #- name: Generate Coverage Report
     #  run: |
