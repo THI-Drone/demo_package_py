@@ -23,6 +23,7 @@ jobs:
         repository: THI-Drone/thi-drone-ws
         path: thi-drone-ws
         ref: dev
+        submodules: recursive
 
     - name: Install dependencies
       run: sudo apt update && sudo apt install -y python3-pip && pip install colcon-common-extensions   
