@@ -19,23 +19,34 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      
-    - name: Setup Python
-      uses: actions/setup-python@v2
+
+    - name: Setup ROS Environment
+      uses: ros-tooling/setup-ros@v0.7
       with:
-        python-version: '3.10'
-        
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt-get install -y python3-pip
-        pip install setuptools==58.2.0
-        pip install colcon-common-extensions
+        required-ros-distributions: foxy
+
+    - name: ros2 build
+      uses: ros-tooling/action-ros-ci@v0.3
+      with:
+        package-name: demo_package_py
+        target-ros2-distro: foxy
+      
+    #- name: Setup Python
+    #  uses: actions/setup-python@v2
+    #  with:
+    #    python-version: '3.10'
+    #    
+    #- name: Install dependencies
+    #  run: |
+    #    sudo apt update
+    #    sudo apt-get install -y python3-pip
+    #    pip install setuptools==58.2.0
+    #    pip install colcon-common-extensions
 
 
-    - name: Build
-      run: |
-        colcon build
+    #- name: Build
+    #  run: |
+    #    colcon build
     
     - name: Upload build-logs
       uses: actions/upload-artifact@v2
@@ -44,58 +55,58 @@ jobs:
         name: build-logs
         path: ./log
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-artifacts
-        path: ./install/*
+    #- name: Upload build artifacts
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    name: build-artifacts
+    #    path: ./install/*
 
 
 
-  test:
-    needs: build
-    runs-on: ubuntu-22.04
+  #test:
+  #  needs: build
+  #  runs-on: ubuntu-22.04
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Download build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifacts
-        path: ./install
+  #  steps:
+  #  - name: Checkout repository
+  #    uses: actions/checkout@v2
+  #    
+  #  - name: Download build artifacts
+  #    uses: actions/download-artifact@v2
+  #    with:
+  #      name: build-artifacts
+  #      path: ./install
 
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
+  #  - name: Setup Python
+  #    uses: actions/setup-python@v2
+  #    with:
+  #      python-version: '3.10'
         
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt-get install -y python3-pip
-        pip install --upgrade pip
-        pip install setuptools==58.2.0
-        pip install colcon-common-extensions
-        pip install ament-copyright
-        pip install ament-flake8
-        pip install ament-pep257
+  #  - name: Install dependencies
+  #    run: |
+  #      sudo apt update
+  #      sudo apt-get install -y python3-pip
+  #      pip install --upgrade pip
+  #      pip install setuptools==58.2.0
+  #      pip install colcon-common-extensions
+  #      pip install ament-copyright
+  #      pip install ament-flake8
+  #      pip install ament-pep257
 
 
-    - name:  Test
-      run: |
-        ls -la
-        ls -la ./install
-        ls -la ./install/demo_package_py
-        colcon test
+  #  - name:  Test
+  #    run: |
+  #      ls -la
+  #      ls -la ./install
+  #      ls -la ./install/demo_package_py
+  #      colcon test
 
-    - name: Upload test-logs
-      uses: actions/upload-artifact@v2
-      if: failure()
-      with:
-        name: test-logs
-        path: ./log
+  #  - name: Upload test-logs
+  #    uses: actions/upload-artifact@v2
+  #    if: failure()
+  #    with:
+  #      name: test-logs
+  #      path: ./log
 
 
     #- name: Generate Coverage Report
