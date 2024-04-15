@@ -23,9 +23,9 @@ jobs:
     - name: Switch to correct branch in submodule
       run: |
         ls -la thi-drone-ws/src/demo_package_py
-        git branch -a
+        git branch -r
         cd thi-drone-ws/src/demo_package_py
-        git branch -a
+        git branch -r
         git checkout ${{ github.head_ref }}
 
     - name: Install dependencies
