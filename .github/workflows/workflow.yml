@@ -28,7 +28,7 @@ jobs:
         repository: THI-Drone/common_package_py
         token: ${{ secrets.GITHUB_TOKEN }}
         path: src/common_package_py
-        branch: dev
+        ref: dev
 
     - name: Install dependencies
       run: sudo apt update && sudo apt install -y python3-pip && pip install colcon-common-extensions   
