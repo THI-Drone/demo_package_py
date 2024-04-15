@@ -21,8 +21,7 @@ jobs:
         submodules: recursive
        
     - name: Switch to correct branch in submodule
-      run: git checkout ${{ github.head_ref }}
-      working-directory: thi-drone-ws/src/demo_package_py
+      run: cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}
 
     - name: Install dependencies
       run: sudo apt update && sudo apt install -y python3-pip && pip install colcon-common-extensions   
