@@ -17,16 +17,11 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with: 
-        path: src/demo_package_py
-
     - name: Checkout Dependency repository
       uses: actions/checkout@v2
       with:
-        repository: THI-Drone/common_package_py
-        path: src/common_package_py
+        repository: THI-Drone/thi-drone-ws
+        path: thi-drone-ws
         ref: dev
 
     - name: Install dependencies
