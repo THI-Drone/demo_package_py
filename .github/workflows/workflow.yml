@@ -12,43 +12,45 @@ on:
       - pre-release
       - release
 
+
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: ros:foxy
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
+      - uses: actions/checkout@v2
+      - name: Setup ROS2
+        uses: ros-tooling/setup-ros@0.1.4
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          # Add all the dependencies your project needs
+          sudo apt install -y python3-rosdep python3-colcon-build
+          rosdep update
+          rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+
+      - name: Build & Test
+        run: |
+          . /opt/ros/${ROS_DISTRO}/setup.sh
+          colcon build
+          colcon test
+
+      - name: Generate Coverage Report
+        run: |
+          colcon test \
+            --packages-select <demo_package_py> \
+            --event-handlers console_direct+ \
+            --return-code-on-test-failure \
+            --pytest-args "--cov=<demo_package_py>" \
+            --pytest-args "--cov-report=xml"
         
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt-get install -y python3-pip
-        pip install setuptools==58.2.0
-        pip install colcon-common-extensions
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: .coverage.xml
 
 
-    - name: Build and Test
-      run: |
-        colcon build
-        colcon test
-
-    - name: Generate Coverage Report
-      run: |
-        colcon test \
-          --packages-select <demo_package_py> \
-          --event-handlers console_direct+ \
-          --return-code-on-test-failure \
-          --pytest-args "--cov=<demo_package_py>" \
-          --pytest-args "--cov-report=xml"
-      
-    - name: Upload Coverage Report
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-report
-        path: .coverage.xml
+          jobs:
