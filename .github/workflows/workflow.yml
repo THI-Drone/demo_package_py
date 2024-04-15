@@ -75,6 +75,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt-get install -y python3-pip
+        pip install --upgrade pip
         pip install setuptools==58.2.0
         pip install colcon-common-extensions
         pip install ament-copyright
