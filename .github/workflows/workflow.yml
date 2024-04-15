@@ -33,7 +33,7 @@ jobs:
         pip install colcon-common-extensions
 
 
-    - name: Build and Test
+    - name: Build
       run: |
         colcon build
 
@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build-artifacts
-        path: ./install
+        path: ./install/*
 
 
 
@@ -57,7 +57,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: build-artifacts
-        path: ./install
+        path: ./install/*
 
     - name: Setup Python
       uses: actions/setup-python@v2
@@ -72,7 +72,7 @@ jobs:
         pip install colcon-common-extensions
 
 
-    - name: Build and Test
+    - name:  Test
       run: |
         colcon test
     #- name: Generate Coverage Report
