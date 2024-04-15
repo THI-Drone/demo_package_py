@@ -57,7 +57,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: build-artifacts
-        path: ./install/*
+        path: ./install
 
     - name: Setup Python
       uses: actions/setup-python@v2
@@ -76,7 +76,7 @@ jobs:
       run: |
         ls -la
         ls -la ./install
-        ls -la ./install/*
+        ls -la ./install/demo_package_py
         colcon test
     #- name: Generate Coverage Report
     #  run: |
