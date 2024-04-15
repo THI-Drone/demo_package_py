@@ -1,11 +1,6 @@
 name: Colcon Test and Coverage
 
 on:
-  push:
-    branches:
-      - dev
-      - pre-release
-      - release
   pull_request:
     branches:
       - dev
@@ -27,7 +22,7 @@ jobs:
        
     - name: Switch to correct branch in submodule
       run: |
-        cd src/demo_package_py
+        cd thi-drone-ws/src/demo_package_py
         git checkout ${{ github.head_ref }}
 
     - name: Install dependencies
