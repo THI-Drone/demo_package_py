@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout Dependency repository
+    - name: Checkout repositories
       uses: actions/checkout@v2
       with:
         repository: THI-Drone/thi-drone-ws
@@ -20,8 +20,22 @@ jobs:
         ref: dev
         submodules: recursive
        
-    - name: Switch to correct branch in submodule
-      run: cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}
+    - name: Delete demo_package_py
+      run: |
+        cd thi-drone-ws/src
+        rm -rf demo_package_py
+
+    - name: clone demo_package_py
+      uses: actions/checkout@v2
+      with:
+        path: thi-drone-ws/src/demo_package_py
+
+    - name: debug
+      run: |
+        ls -la
+        ls -la thi-drone-ws
+        ls -la thi-drone-ws/src
+        ls -la thi-drone-ws/src/demo_package_py
 
     - name: Install dependencies
       run: sudo apt update && sudo apt install -y python3-pip && pip install colcon-common-extensions   
