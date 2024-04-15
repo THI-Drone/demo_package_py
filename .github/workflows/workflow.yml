@@ -77,6 +77,10 @@ jobs:
         sudo apt-get install -y python3-pip
         pip install setuptools==58.2.0
         pip install colcon-common-extensions
+        sudo apt install python3-rosdep
+        sudo rosdep init
+        rosdep update
+        rosdep install --from-paths src --ignore-src -y
 
 
     - name:  Test
