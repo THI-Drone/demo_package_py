@@ -28,8 +28,10 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y python3-colcon-common-extensions
-        python -m pip install colcon-ros-bundle
+        apt-get install -y python3-pip
+        pip install setuptools==58.2.0
+        pip install colcon-common-extensions
+
 
     - name: Build and Test
       run: |
