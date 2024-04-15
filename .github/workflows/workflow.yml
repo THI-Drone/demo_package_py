@@ -26,7 +26,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: THI-Drone/common_package_py
-        token: ${{ secrets.GITHUB_TOKEN }}
         path: src/common_package_py
         ref: dev
 
