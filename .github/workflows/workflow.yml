@@ -23,7 +23,7 @@ jobs:
       with:
         repository: THI-Drone/thi-drone-ws
         token: ${{ secrets.GITHUB_TOKEN }}
-        submodules: true
+        submodules: recursive
         ref: ${{ github.head_ref }}
        
     - name: Switch to correct branch in submodule
