@@ -36,6 +36,12 @@ jobs:
     - name: Build
       run: |
         colcon build
+    
+    - name: Upload build-logs
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-logs
+        path: ./log
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
@@ -78,6 +84,14 @@ jobs:
         ls -la ./install
         ls -la ./install/demo_package_py
         colcon test
+
+    - name: Upload test-logs
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-logs
+        path: ./log
+
+
     #- name: Generate Coverage Report
     #  run: |
     #    colcon test \
