@@ -27,7 +27,7 @@ jobs:
         git branch -r
         cd src/demo_package_py
         git branch -r
-        git checkout ${{ github.head_ref }}
+
 
     - name: Install dependencies
       run: sudo apt update && sudo apt install -y python3-pip && pip install colcon-common-extensions   
