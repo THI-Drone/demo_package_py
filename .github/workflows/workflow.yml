@@ -17,8 +17,13 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout repository
+
+    - name: Checkout repositories
       uses: actions/checkout@v2
+      with:
+        repository: https://github.com/THI-Drone
+        token: ${{ secrets.GITHUB_TOKEN }}
+        submodules: recursive
 
     - name: Install dependencies
       run: sudo apt update && sudo apt install -y python3-pip && pip install colcon-common-extensions   
