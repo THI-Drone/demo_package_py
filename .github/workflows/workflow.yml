@@ -22,6 +22,7 @@ jobs:
        
     - name: Switch to correct branch in submodule
       run: |
+        ls -la
         cd thi-drone-ws/src/demo_package_py
         git checkout ${{ github.head_ref }}
 
