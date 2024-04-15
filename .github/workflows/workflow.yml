@@ -1,0 +1,48 @@
+name: Colcon Test and Coverage
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y python3-colcon-common-extensions
+        python -m pip install colcon-ros-bundle
+
+    - name: Build and Test
+      run: |
+        colcon build
+        colcon test
+
+    - name: Generate Coverage Report
+      run: |
+        colcon test \
+          --packages-select <demo_package_py> \
+          --event-handlers console_direct+ \
+          --return-code-on-test-failure \
+          --pytest-args "--cov=<demo_package_py>" \
+          --pytest-args "--cov-report=xml"
+      
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: .coverage.xml
