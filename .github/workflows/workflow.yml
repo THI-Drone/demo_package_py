@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        apt-get install -y python3-pip
+        sudo apt-get install -y python3-pip
         pip install setuptools==58.2.0
         pip install colcon-common-extensions
 
