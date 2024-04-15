@@ -22,11 +22,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup ROS2
-        uses: ros-tooling/setup-ros@0.1.4
+        uses: ros-tooling/setup-ros@main
       - name: Install Dependencies
         run: |
           sudo apt update
-          # Add all the dependencies your project needs
           sudo apt install -y python3-rosdep python3-colcon-build
           rosdep update
           rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
@@ -51,6 +50,3 @@ jobs:
         with:
           name: coverage-report
           path: .coverage.xml
-
-
-          jobs:
