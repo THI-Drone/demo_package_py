@@ -21,7 +21,7 @@ jobs:
     - name: Checkout repositories
       uses: actions/checkout@v2
       with:
-        repository: https://github.com/THI-Drone
+        repository: https://github.com/THI-Drone/thi-drone-ws
         token: ${{ secrets.GITHUB_TOKEN }}
         submodules: recursive
 
