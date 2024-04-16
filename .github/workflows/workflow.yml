@@ -27,9 +27,9 @@ jobs:
         docker exec -i ros-container sudo rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -y 
         docker exec -i ros-container git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git 
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}"
-        docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash && cd thi-drone-ws && colcon build --symlink-install"
-        docker exec -i ros-container /bin/bash -c "colcon test"
-        docker exec -i ros-container /bin/bash -c "colcon test-result --all"
+        docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash && cd thi-drone-ws && colcon build --symlink-install --packages-select demo_package_py"
+        docker exec -i ros-container /bin/bash -c "colcon test --packages-select demo_package_py"
+        docker exec -i ros-container /bin/bash -c "colcon test-result --all --packages-select demo_package_py"
 
     - name: debug
       run: |
