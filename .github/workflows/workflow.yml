@@ -27,13 +27,12 @@ jobs:
         
     - name: Run commands inside Docker Container
       run: |
-        docker exec -i ros-container /bin/bash -c "su workflow"
-        docker exec -i ros-container /bin/bash -c "sudo apt-get update && sudo apt-get install -y nlohmann-json3-dev && sudo apt-get install -y python3-pip && pip install setuptools==58.2.0"
-        docker exec -i ros-container git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git 
-        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}"
-        docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash"
-        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/ && sudo rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -y"
-        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test && colcon test-result --all"
+        docker exec -i ros-container /bin/bash -c "su workflow &&sudo apt-get update && sudo apt-get install -y nlohmann-json3-dev && sudo apt-get install -y python3-pip && pip install setuptools==58.2.0"
+        docker exec -i ros-container /bin/bash -c "su workflow && git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git"
+        docker exec -i ros-container /bin/bash -c "su workflow &&cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}"
+        docker exec -i ros-container /bin/bash -c "su workflow &&source /opt/ros/humble/setup.bash"
+        docker exec -i ros-container /bin/bash -c "su workflow &&cd thi-drone-ws/ && sudo rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -y"
+        docker exec -i ros-container /bin/bash -c "su workflow &&cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test && colcon test-result --all"
 
     - name: Copy logs from container to workspace
       if: failure()
