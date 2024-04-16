@@ -24,7 +24,7 @@ jobs:
         docker exec -i ros-container /bin/bash
         docker exec -i ros-container apt-get update
         docker exec -i ros-container apt-get install -y passwd
-        docker exec -i ros-container groupadd --gid 1000 workflow && useradd --uid 1000 --gid 1000 -m workflow
+        docker exec -i ros-container groupadd --gid 1000 workflow && /usr/sbin/useradd --uid 1000 --gid 1000 -m workflow
         docker exec -i ros-container apt-get update && apt-get install -y sudo
         docker exec -i ros-container echo workflow ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/workflow && chmod 0440 /etc/sudoers.d/workflow
         docker exec -i ros-container su workflow
