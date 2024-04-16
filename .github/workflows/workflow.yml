@@ -8,10 +8,14 @@ on:
       - release
 
 jobs:
-  Build-and-test:
+  Build-test-autoformat:
     runs-on: self-hosted
 
     steps:
+
+    - name: Get the date
+      id: date
+      run: echo "date=$(date +'%F-%H-%M-%S')" >> $GITHUB_OUTPUT
 
     - name: Setup Docker Container 
       run: | 
@@ -34,12 +38,12 @@ jobs:
         rm -rf ./coverage
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py"
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py/build"
-        docker cp ros-container:/thi-drone-ws/src/demo_package_py ./coverage
+        docker cp ros-container:/thi-drone-ws/src/demo_package_py/htmlcov ./coverage
 
-    - name: Upload test reports
+    - name: Upload coverage report
       uses: actions/upload-artifact@main
       with:
-        name: test-reports
+        name: coverage-report-${{ steps.date.outputs.date }}
         path: ./coverage
 
     - name: Copy logs from container to workspace
@@ -52,7 +56,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: failure()
       with:
-        name: build-logs
+        name: build-logs-${{ steps.date.outputs.date }}
         path: ./log
       
 
