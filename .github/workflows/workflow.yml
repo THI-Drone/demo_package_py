@@ -24,19 +24,22 @@ jobs:
 
     - name: Run commands inside Docker Container
       run: |
-        docker exec -i ros-container /bin/bash -c "apt-get update && apt-get install -y nlohmann-json3-dev && apt-get install -y python3-pip && pip install setuptools==58.2.0 && pip install pytest && rosdep update && apt-get install python3-ament-copyright python3-ament-flake8 python3-ament-pep257 -y"
+        docker exec -i ros-container /bin/bash -c "apt-get update && apt-get install -y nlohmann-json3-dev && apt-get install -y python3-pip && pip install setuptools==58.2.0 && pip install pytest && rosdep update && pip install pytest coverage && pip install colcon-coveragepy-result"
         docker exec -i ros-container /bin/bash -c "git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git"
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}"
         docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash"
-
-        docker exec -i ros-container /bin/bash -c "apt list --installed | grep ament"
-        docker exec -i ros-container /bin/bash -c "dpkg -L python3-ament-copyright python3-ament-flake8 python3-ament-pep257"
-        
-
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/ && rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -r -y"
-        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test && colcon test-result --all"
+        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test --pytest-args '--cov' && colcon test-result --all && colcon coveragepy-result
         
+    - name: Copy coverage report from container to workspace
+      run: |
+        docker cp ros-container:/thi-drone-ws/src/demo_package_py/build/coverage ./coverage
 
+    - name: Upload test reports
+      uses: actions/upload-artifact@main
+      with:
+        name: test-reports
+        path: ./coverage
 
     - name: Copy logs from container to workspace
       if: failure()
