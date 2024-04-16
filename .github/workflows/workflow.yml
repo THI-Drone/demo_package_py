@@ -24,11 +24,11 @@ jobs:
 
     - name: Run commands inside Docker Container
       run: |
-        docker exec -i ros-container /bin/bash -c "apt-get update && apt-get install -y nlohmann-json3-dev && apt-get install -y python3-pip && pip install setuptools==58.2.0"
+        docker exec -i ros-container /bin/bash -c "apt-get update && apt-get install -y nlohmann-json3-dev && apt-get install -y python3-pip && pip install setuptools==58.2.0 && rosdep update"
         docker exec -i ros-container /bin/bash -c "git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git"
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}"
         docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash"
-        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/ && rosdep init && rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -y"
+        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/ && rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -r -y"
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test && colcon test-result --all"
 
     - name: Copy logs from container to workspace
