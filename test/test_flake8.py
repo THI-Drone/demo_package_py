@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
+if "/usr/lib/python3/dist-packages" not in sys.path:
+    sys.path.append("/usr/lib/python3/dist-packages")
+
 from ament_flake8.main import main_with_errors
 import pytest
 
