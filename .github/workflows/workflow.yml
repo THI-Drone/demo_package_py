@@ -33,7 +33,7 @@ jobs:
         
     - name: Copy coverage report from container to workspace
       run: |
-        docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py
+        docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py"
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py/build"
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py/build/coverage"
         docker cp ros-container:/thi-drone-ws/src/demo_package_py/build/coverage ./coverage
