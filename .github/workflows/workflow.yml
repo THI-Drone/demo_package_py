@@ -27,7 +27,7 @@ jobs:
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}"
         docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash"
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/ && rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -r -y"
-        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test --pytest-args '--cov' && colcon test-result --all && colcon coveragepy-result"
+        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build && colcon test --pytest-args '--cov .' && colcon test-result --all && colcon coveragepy-result"
         
     - name: Copy coverage report from container to workspace
       run: |
@@ -54,5 +54,6 @@ jobs:
       with:
         name: build-logs
         path: ./log
+      
 
 
