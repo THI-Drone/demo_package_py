@@ -34,7 +34,7 @@ jobs:
         rm -rf ./coverage
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py"
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py/build"
-        docker cp ros-container:/thi-drone-ws/src/demo_package_py/coverage ./coverage
+        docker cp ros-container:/thi-drone-ws/src/demo_package_py ./coverage
 
     - name: Upload test reports
       uses: actions/upload-artifact@main
