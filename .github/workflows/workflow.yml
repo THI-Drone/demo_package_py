@@ -31,6 +31,7 @@ jobs:
         
     - name: Copy coverage report from container to workspace
       run: |
+        rm -rf ./coverage
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py"
         docker exec -i ros-container /bin/bash -c "ls -la /thi-drone-ws/src/demo_package_py/build"
         docker cp ros-container:/thi-drone-ws/src/demo_package_py ./coverage
@@ -44,6 +45,7 @@ jobs:
     - name: Copy logs from container to workspace
       if: failure()
       run: |
+        rm -rf ./log
         docker cp ros-container:/thi-drone-ws/src/demo_package_py/log ./log
     
     - name: Upload build-logs
