@@ -19,17 +19,17 @@ jobs:
         
     - name: Run commands inside Docker Container
       run: |
-        docker run --name ros-container -it -d ros:humble bash 
-        docker exec -it ros-container git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git 
-        docker exec -it ros-container /bin/bash -c "cd ws-thi-drone/src/demo_package_py && git checkout ${{ github.ref }}"
-        docker exec -it ros-container /bin/bash -c "colcon build --symlink-install"
-        docker exec -it ros-container /bin/bash -c "colcon test"
-        docker exec -it ros-container /bin/bash -c "colcon test-result --all"
+        docker run --name ros-container -t -d ros:humble bash 
+        docker exec -i ros-container git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git 
+        docker exec -i ros-container /bin/bash -c "cd ws-thi-drone/src/demo_package_py && git checkout ${{ github.ref }}"
+        docker exec -i ros-container /bin/bash -c "colcon build --symlink-install"
+        docker exec -i ros-container /bin/bash -c "colcon test"
+        docker exec -i ros-container /bin/bash -c "colcon test-result --all"
 
     - name: debug
       run: |
-        docker exec -it ros-container /bin/bash -c "ls -l /thi-drone-ws/src/demo_package_py/log"
-        docker exec -it ros-container /bin/bash -c "cat /thi-drone-ws/src/demo_package_py/log/test_results/test_results.xml"
+        docker exec -i ros-container /bin/bash -c "ls -l /thi-drone-ws/src/demo_package_py/log"
+        docker exec -i ros-container /bin/bash -c "cat /thi-drone-ws/src/demo_package_py/log/test_results/test_results.xml"
 
     - name: Copy logs from container to workspace
       run: |
