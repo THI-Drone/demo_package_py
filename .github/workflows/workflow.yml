@@ -23,7 +23,7 @@ jobs:
       uses: THI-Drone/action-autopep@main
       with:
         apply-changes: false
-        use-own-pep8-config: false
+        use-own-pep8-config: true
 
     - name: Setup Docker Container 
       run: | 
