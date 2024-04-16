@@ -31,11 +31,13 @@ jobs:
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test && colcon test-result --all"
 
     - name: debug
+      if: failure()
       run: |
         docker exec -i ros-container /bin/bash -c "ls -l /thi-drone-ws/src/demo_package_py/log"
         docker exec -i ros-container /bin/bash -c "cat /thi-drone-ws/src/demo_package_py/log/test_results/test_results.xml"
 
     - name: Copy logs from container to workspace
+      if: failure()
       run: |
         docker cp ros-container:/thi-drone-ws/src/demo_package_py/log ./log
     
