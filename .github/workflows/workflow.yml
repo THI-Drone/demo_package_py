@@ -16,10 +16,14 @@ jobs:
     - name: Setup Docker Container 
       run: | 
         docker pull ros:humble
+
+    - name: Prepare Docker container
+      run: |
+        docker rm -f ros-container || true
+        docker run --name ros-container -i -d ros:humble bash
         
     - name: Run commands inside Docker Container
       run: |
-        docker run --name ros-container -i -d ros:humble bash 
         docker exec -i ros-container git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git 
         docker exec -i ros-container /bin/bash -c "cd ws-thi-drone/src/demo_package_py && git checkout ${{ github.ref }}"
         docker exec -i ros-container /bin/bash -c "colcon build --symlink-install"
