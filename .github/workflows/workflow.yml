@@ -1,4 +1,4 @@
-name: Colcon Test and Coverage
+name: Colcon Build, Test, Coverage and Autoformat
 
 on:
   pull_request:
@@ -6,6 +6,8 @@ on:
       - dev
       - pre-release
       - release
+
+  workflow_dispatch:
 
 jobs:
   Build-test-autoformat:
