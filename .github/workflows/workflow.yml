@@ -9,60 +9,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
 
     steps:
-    - name: Checkout repositories
-      uses: actions/checkout@v2
-      with:
-        repository: THI-Drone/thi-drone-ws
-        path: thi-drone-ws
-        ref: dev
-        submodules: recursive
-       
-    - name: Delete demo_package_py
+
+    - name: Setup Docker Container 
+      run: | 
+        docker pull ros:humble
+        
+    - name: Run commands inside Docker Container
       run: |
-        cd thi-drone-ws/src
-        rm -rf demo_package_py
+        docker run --name ros-container -it -d ros:humble bash 
+        docker exec -it ros-container git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git 
+        docker exec -it ros-container /bin/bash -c "cd ws-thi-drone/src/demo_package_py && git checkout ${{ github.ref }}"
+        docker exec -it ros-container /bin/bash -c "colcon build --symlink-install"
+        docker exec -it ros-container /bin/bash -c "colcon test"
+        docker exec -it ros-container /bin/bash -c "colcon test-result --all"
 
-    - name: clone demo_package_py
-      uses: actions/checkout@v2
-      with:
-        path: thi-drone-ws/src/demo_package_py
 
-    - name: debug
+    - name: Copy logs from container to workspace
       run: |
-        ls -la
-        ls -la thi-drone-ws
-        ls -la thi-drone-ws/src
-        ls -la thi-drone-ws/src/demo_package_py
-
-    - name: Install dependencies
-      run: sudo apt update && sudo apt install -y python3-pip && pip install colcon-common-extensions   
-
-    - name: Setup ROS Environment
-      uses: ros-tooling/setup-ros@v0.7
-      with:
-        required-ros-distributions: humble
-
-    - name: ros2 build
-      uses: ros-tooling/action-ros-ci@v0.3
-      with:
-        package-name: demo_package_py
-        import-token: ${{ secrets.GITHUB_TOKEN }}
-        target-ros2-distro: humble
+        docker cp ros-container:/thi-drone-ws/src/demo_package_py/log ./log
     
     - name: Upload build-logs
       uses: actions/upload-artifact@v2
       if: failure()
       with:
         name: build-logs
-        path: ./thi-drone-ws/src/demo_package_py/log
-
-    #- name: Upload build artifacts
-    #  uses: actions/upload-artifact@v2
-    #  with:
-    #    name: build-artifacts
-    #    path: ./install/*
+        path: ./log
 
 
