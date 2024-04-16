@@ -16,6 +16,12 @@ jobs:
     - name: Get the date
       id: date
       run: echo "date=$(date +'%F_%H-%M-%S')" >> $GITHUB_OUTPUT
+    
+    - name: Autopep8
+      uses: THI-Drone/action-autopep@main
+      with:
+        apply-changes: false
+        use-own-pep8-config: false
 
     - name: Setup Docker Container 
       run: | 
