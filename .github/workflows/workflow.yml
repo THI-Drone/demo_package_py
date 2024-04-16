@@ -41,7 +41,7 @@ jobs:
         docker cp ros-container:/thi-drone-ws/src/demo_package_py/log ./log
     
     - name: Upload build-logs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@main
       if: failure()
       with:
         name: build-logs
