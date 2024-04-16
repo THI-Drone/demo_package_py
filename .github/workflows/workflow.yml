@@ -25,7 +25,7 @@ jobs:
     - name: Run commands inside Docker Container
       run: |
         docker exec -i ros-container git clone --recursive --branch dev https://github.com/THI-Drone/thi-drone-ws.git 
-        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.ref }}"
+        docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && git checkout ${{ github.head_ref }}"
         docker exec -i ros-container /bin/bash -c "colcon build --symlink-install"
         docker exec -i ros-container /bin/bash -c "colcon test"
         docker exec -i ros-container /bin/bash -c "colcon test-result --all"
