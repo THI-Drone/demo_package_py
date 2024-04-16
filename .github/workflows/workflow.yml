@@ -30,6 +30,8 @@ jobs:
         docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash"
 
         docker exec -i ros-container /bin/bash -c "apt list --installed | grep ament"
+        docker exec -i ros-container /bin/bash -c "dpkg -L python3-ament-copyright python3-ament-flake8 python3-ament-pep257"
+        
 
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/ && rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -r -y"
         docker exec -i ros-container /bin/bash -c "cd thi-drone-ws/src/demo_package_py && colcon build --symlink-install && colcon test && colcon test-result --all"
