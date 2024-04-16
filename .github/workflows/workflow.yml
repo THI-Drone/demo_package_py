@@ -26,6 +26,10 @@ jobs:
         docker exec -it ros-container /bin/bash -c "colcon test"
         docker exec -it ros-container /bin/bash -c "colcon test-result --all"
 
+    - name: debug
+      run: |
+        docker exec -it ros-container /bin/bash -c "ls -l /thi-drone-ws/src/demo_package_py/log"
+        docker exec -it ros-container /bin/bash -c "cat /thi-drone-ws/src/demo_package_py/log/test_results/test_results.xml"
 
     - name: Copy logs from container to workspace
       run: |
