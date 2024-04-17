@@ -47,6 +47,26 @@ jobs:
         rm -rf ./coverage
         docker cp ros-container:/thi-drone-ws/src/demo_package_py/htmlcov ./coverage
 
+    - name: Extract Comment
+      id: comment
+      run: |
+        echo "::set-output name=body::$(docker exec -i ros-container /bin/bash -c "cat thi-drone-ws/src/demo_package_py/log/latest_test/demo_package_py/stdout_stderr.log")"
+
+    - name: Add comment to PR
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          var fs = require('fs');
+          var issue_number = ${{ github.event.pull_request.number }};
+          var comment_body = "${{ steps.comment.outputs.body }}";
+          github.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issue_number,
+            body: comment_body
+          });
+
     - name: Upload coverage report
       uses: actions/upload-artifact@main
       with:
