@@ -47,6 +47,17 @@ jobs:
         rm -rf ./coverage
         docker cp ros-container:/thi-drone-ws/src/demo_package_py/htmlcov ./coverage
 
+    - name: Comment PR
+      run: |
+        PR_COMMENT=docker exec -i ros-container /bin/bash -c "cat thi-drone-ws/src/demo_package_py/log/latest_test/demo_package_py/stdout_stderr.log"
+        
+        curl \
+          -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ github.event.pull_request.number }}/comments \
+          -d "{\"body\":\"$PR_COMMENT\"}"
+
     - name: Extract Comment
       id: comment
       run: |
