@@ -57,6 +57,7 @@ jobs:
       with:
         message: |
           ${{ steps.comment.outputs.body }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
     - name: Upload coverage report
