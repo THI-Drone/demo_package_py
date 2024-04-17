@@ -45,20 +45,14 @@ jobs:
     - name: Copy coverage report from container to workspace
       run: |
         rm -rf ./coverage
+        rm -rf ./stdout_stderr.log
         docker cp ros-container:/thi-drone-ws/src/demo_package_py/htmlcov ./coverage
-    
-    - name: Extract Comment
-      id: comment
-      run: |
-        echo "::set-output name=body::$(docker exec -i ros-container /bin/bash -c "cat thi-drone-ws/src/demo_package_py/log/latest_test/demo_package_py/stdout_stderr.log")"
+        docker cp ros-container:/thi-drone-ws/src/demo_package_py/log/latest_test/demo_package_py/stdout_stderr.log ./stdout_stderr.log
 
-    - name: Comment PR
+    - name: PR comment
       uses: thollander/actions-comment-pull-request@v2
       with:
-        message: |
-          ${{ steps.comment.outputs.body }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        filePath: ./stdout_stderr.log
 
     - name: Upload coverage report
       uses: actions/upload-artifact@main
