@@ -8,14 +8,14 @@ from common_package_py.common_node import CommonNode
 class MinimalPublisher(CommonNode):
     """A class that represents a minimal node.
     """
-    
+
     def __init__(self, id: str):
         """Creates a new MinimalPublisher node.
 
         Args:
             id (str): Unique node id
         """
-        
+
         super().__init__(id)
 
 
