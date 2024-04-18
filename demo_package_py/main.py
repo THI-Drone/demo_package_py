@@ -30,5 +30,9 @@ def main(args=None):
     rclpy.shutdown()
 
 
+def capital_case(x):
+    return x.capitalize()
+
+
 if __name__ == '__main__':
     main()

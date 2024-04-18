@@ -1,6 +1,6 @@
 import pytest
 
-from example import capital_case
+from demo_package_py.main import capital_case
 
 
 def test_capital_case():
