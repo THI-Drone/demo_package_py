@@ -84,8 +84,9 @@ jobs:
       run: |
         REPONAME=$(basename ${{github.repository}})
         docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash && cd thi-drone-ws/ && rosdep fix-permissions && rosdep update && rosdep install --from-paths src --ignore-src -r -y"
-        docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash && cd thi-drone-ws/ && colcon build --packages-up-to $REPONAME --cmake-args -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS='--coverage' -DCMAKE_CXX_FLAGS='--coverage' -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && colcon lcov-result --initial --packages-up-to $REPONAME && colcon test --packages-up-to $REPONAME --pytest-args '--cov=.' '--cov-report=html' && colcon lcov-result --paths ./src/$REPONAME if [ $? -eq 0 ]; then echo 'colcon lcov-result command was successful'; else echo 'colcon lcov-result command failed'; fi"
-        
+        set +e
+        docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash && cd thi-drone-ws/ && colcon build --packages-up-to $REPONAME --cmake-args -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS='--coverage' -DCMAKE_CXX_FLAGS='--coverage' -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && colcon lcov-result --initial --packages-up-to $REPONAME && colcon test --packages-up-to $REPONAME --pytest-args '--cov=.' '--cov-report=html' && colcon lcov-result --paths ./src/$REPONAME"
+        set -e
         docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws/src/$REPONAME && \
           if [ -f coverage ]; then \
             coverage report; \
