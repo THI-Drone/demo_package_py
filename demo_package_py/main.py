@@ -30,9 +30,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-def return_one():
-    return 1
-
-
 if __name__ == '__main__':
     main()
