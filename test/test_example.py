@@ -1,12 +1,7 @@
 import pytest
 
-from demo_package_py.main import capital_case
+from demo_package_py.main import return_one
 
 
-def test_capital_case():
-    assert capital_case('semaphore') == 'Semaphore'
-
-
-def test_raises_exception_on_non_string_arguments():
-    with pytest.raises(AttributeError):
-        capital_case(9)
+def test_return_one():
+    assert return_one() == 1
