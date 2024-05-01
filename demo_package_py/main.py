@@ -21,7 +21,7 @@ class MinimalPublisher(CommonNode):
 
 def main(args=None):
     rclpy.init(args=args)
-    
+
     print("This is a test")
 
     minimal_publisher = MinimalPublisher(sys.argv[1])
